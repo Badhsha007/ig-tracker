@@ -5,20 +5,37 @@ import requests
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 
-# 1. Authenticate with Google Sheets using GitHub Secrets
+# 1. Authenticate with Google Sheets
 try:
     creds_json = json.loads(os.environ.get("GOOGLE_CREDS"))
     sheet_id = os.environ.get("SPREADSHEET_ID")
     
     gc = gspread.service_account_from_dict(creds_json)
     sh = gc.open_by_key(sheet_id)
-    worksheet = sh.worksheet("IncomingPosts")
+    
+    # SMART MATCHING: Loop through all tabs, clean their names, and look for a match
+    worksheet = None
+    target_name = "incomingposts"
+    
+    for ws in sh.worksheets():
+        # Clean the tab name by making it lowercase and removing all spaces
+        cleaned_tab_title = ws.title.lower().replace(" ", "")
+        if cleaned_tab_title == target_name:
+            worksheet = ws
+            break
+            
+    if worksheet is None:
+        # If it still fails, print out exactly what tabs it DID find so we can spot the error
+        all_tabs = [w.title for w in sh.worksheets()]
+        print(f"Error: Could not find 'IncomingPosts'. Your current sheet tabs are: {all_tabs}")
+        exit(1)
+        
 except Exception as e:
     print(f"Google Authentication Error: {e}")
     exit(1)
 
 # 2. List the usernames of the clients you want to track
-CLIENTS = ["instadsagency_", ""] 
+CLIENTS = ["zuck", "mosseri"] 
 
 for username in CLIENTS:
     try:
