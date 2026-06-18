@@ -25,4 +25,4 @@ jobs:
         env:
           GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDS }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-        run: python tracker.py
+        run: python -u tracker.py
