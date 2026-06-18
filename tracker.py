@@ -18,7 +18,7 @@ except Exception as e:
     exit(1)
 
 # 2. List the usernames of the clients you want to track
-CLIENTS = ["zuck", "mosseri"] 
+CLIENTS = ["instadsagency_", ""] 
 
 for username in CLIENTS:
     try:
