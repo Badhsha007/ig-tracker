@@ -54,7 +54,7 @@ for username in CLIENTS:
                 pub_date = datetime.strptime(pub_date_str, "%a, %d %b %Y %H:%M:%S %Z")
                 
                 # Check if post was made in the last 15 minutes
-                if datetime.utcnow() - pub_date < timedelta(minutes=15):
+                if datetime.utcnow() - pub_date < timedelta(days=100):
                     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     
                     # Append directly to Google Sheet row
